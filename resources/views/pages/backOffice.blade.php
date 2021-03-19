@@ -1,5 +1,5 @@
-@extends('template.main')
+@extends('layouts.app')
 
 @section('content')
-    <h1>ici, backoffice</h1>
+    <h1>backoffice</h1>
 @endsection

@@ -20,7 +20,7 @@ class RoleVerification
         if(Auth::user()->role_id == 2){
             return $next($request); 
         } else{
-            return redirect()->back();
+            return redirect('/');
         }
     }
 }

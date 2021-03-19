@@ -20,7 +20,7 @@ class isConnected
         if (Auth::check()) {
             return $next($request);
         } else {
-            return redirect('/');
+            return redirect('/login');
         }
     }
 }
