@@ -8,7 +8,7 @@ class Backoffice extends Controller
 {
     public function __construct()
     {
-        $this->middleware('isConnected');
+        $this->middleware(['isConnected','RoleVerification']);
     }
     /**
      * Display a listing of the resource.
