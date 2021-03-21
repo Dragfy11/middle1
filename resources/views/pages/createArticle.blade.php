@@ -1,25 +1,24 @@
 @extends('template.main')
-
-
 @section('content')
 
-    <div class="container">
-
-        <form action="/articles" method="POST">
+    <section class="container">
+        <div class="container">
+            @if ($errors->any()) 
+            <div class="alert alert-danger"> 
+                <ul> @foreach ($errors->all() as $error) 
+                    <li>{{ $error }}</li> @endforeach 
+                </ul> 
+            </div> 
+            @endif
+        </div>
+        <form  class="border border-primary rounded p-5" action="/article" method="POST">
             @csrf
-
-
-            <div class="form-group">
-                <label for="">Title</label>
-                <input class="form-control" name="title" type="text">
-            </div>
-            <div class="form-group">
-                <label for="">Text</label>
-                <input class="form-control" name="text" type="text">
-            </div>
-
-            <button class="btn btn-success" type="submit">Ajouter</button>
+            <label for="">Titre : </label>
+            <input type="text" name="title" value={{old("title")}}>
+            <label for="">Text : </label>
+            <input type="text" name="text" value={{old("text")}}>
+            <button type="submit" class="btn btn-warning">Ajouter</button>
         </form>
-    </div>
+    </section>
     
-@endsection
+    @endsection

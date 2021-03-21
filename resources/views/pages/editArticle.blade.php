@@ -1,29 +1,28 @@
-
 @extends('template.main')
-
-
 @section('content')
+    <section class="container p-5">
+        <div class="container">
+            @if ($errors->any()) 
+            <div class="alert alert-danger"> 
+                <ul> @foreach ($errors->all() as $error) 
+                    <li>{{ $error }}</li> @endforeach 
+                </ul> 
+            </div> 
+            @endif
+        </div>
 
-    <div class="container">
-        <form action="/articles/{{$article->id}}" method="POST">
-        @csrf
-        @method('PATCH')
+        <form action="/article/{{$article->id}}" method="POST" class="border border-primary rounded p-5">
+            @csrf
+            @method("PATCH")
 
-        <div class="form-group"></div>
-            <label for="">Title</label>
-            <input value="{{$article->title}}" class="form-control" type="text" name="title">
+            <label for="">Titre : </label>
+            <input type="text" name="title" value="{{old("title")? old("title") : $article->title}}">
 
-        </div>    
-       
+            <label for="">Text : </label>
+            <input type="text" name="text" value="{{old("text")? old("text") : $article->text}}">
 
-        <div class="form-group"></div>
-            <label for="">Text</label>
-            <input value="{{$article->text}}" class="form-control" type="text" name="text">
-
-        </div>    
-
-        <button type="submit"> Update </button>
+            <button type="submit" class="btn btn-warning">Ajouter</button>
         </form>
-    </div>
+    </section>
     
-@endsection
+    @endsection

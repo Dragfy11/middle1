@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
+    // acces uniquement si enregistrer 
     public function __construct()
     {
-        $this->middleware(['auth','role']);
+        $this->middleware(["auth","IsWebmaster", "role"]);
     }
     /**
      * Display a listing of the resource.
@@ -18,9 +20,8 @@ class ArticleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $articles = Article::all();
-        return view('pages.article', compact('articles'));
+    {   $articles = Article::all();
+        return view("pages.article", compact("articles"));
     }
 
     /**
@@ -30,11 +31,8 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $articles=Article::all();
-
-        return view('pages.createArticle',compact('articles'));
-
-
+        
+        return view("pages.createArticle" );
     }
 
     /**
@@ -45,19 +43,12 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $store=new Article;
-
-        $store->title=$request->title;
-        $store->text=$request->text;
-
-        $store->user_id=Auth::id();
-
-
+        $store = New Article;
+        $store->title = $request->title;
+        $store->text = $request->text;
+        $store->user_id = Auth::user()->id;
         $store->save();
-
-        return redirect('/articles');
-
-
+        return redirect("/article");
     }
 
     /**
@@ -68,7 +59,7 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        return view('pages.showArticle',compact('article'));
+        return view("pages.showArticle", compact("article"));
     }
 
     /**
@@ -79,7 +70,8 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        return view('pages.editArticles',compact('article'));
+        $users = User::all();
+        return view ("pages.editArticles", compact("users", "article"));
     }
 
     /**
@@ -91,15 +83,21 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-        $article->title=$request->title;
-        $article->text=$request->text;
-
-
+        $validate = $request->validate([
+            "title" => "required|string|max:700",
+            "text" => "required"
+        ]);
+        $article->title = $request->title; 
+        $article->text = $request->text;
         $article->save();
+        return redirect("/article");
 
-        return redirect('articles');
-
-        
+        // $update = Article::find($id);
+        // $update->title = $request->title;
+        // $update->text = $request->text;
+        // $update->user_id = Auth::user()->id;
+        // $update->save();
+        // return redirect("/article");
     }
 
     /**
@@ -110,9 +108,7 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-
-        $article->delete();
-
-        return redirect('articles');
+        $article ->delete();
+        return redirect ("/article");
     }
 }
