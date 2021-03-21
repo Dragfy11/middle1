@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BackOffice;
 use Illuminate\Http\Request;
 
-class Backoffice extends Controller
+class BackOfficeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['isConnected','RoleVerification']);
+        $this->middleware(['auth','role']);
     }
+    
     /**
      * Display a listing of the resource.
      *
@@ -44,10 +46,10 @@ class Backoffice extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\BackOffice  $backOffice
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(BackOffice $backOffice)
     {
         //
     }
@@ -55,10 +57,10 @@ class Backoffice extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\BackOffice  $backOffice
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(BackOffice $backOffice)
     {
         //
     }
@@ -67,10 +69,10 @@ class Backoffice extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\BackOffice  $backOffice
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, BackOffice $backOffice)
     {
         //
     }
@@ -78,10 +80,10 @@ class Backoffice extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\BackOffice  $backOffice
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(BackOffice $backOffice)
     {
         //
     }

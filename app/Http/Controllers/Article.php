@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class Article extends Controller
+class ArticleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('isConnected');
+        $this->middleware(['auth','role']);
     }
     /**
      * Display a listing of the resource.
@@ -17,7 +19,8 @@ class Article extends Controller
      */
     public function index()
     {
-        return view('pages.article');
+        $articles = Article::all();
+        return view('pages.article', compact('articles'));
     }
 
     /**
@@ -27,7 +30,11 @@ class Article extends Controller
      */
     public function create()
     {
-        //
+        $articles=Article::all();
+
+        return view('pages.createArticle',compact('articles'));
+
+
     }
 
     /**
@@ -38,51 +45,74 @@ class Article extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $store=new Article;
+
+        $store->title=$request->title;
+        $store->text=$request->text;
+
+        $store->user_id=Auth::id();
+
+
+        $store->save();
+
+        return redirect('/articles');
+
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Article $article)
     {
-        //
+        return view('pages.showArticle',compact('article'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Article $article)
     {
-        //
+        return view('pages.editArticles',compact('article'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Article $article)
     {
-        //
+        $article->title=$request->title;
+        $article->text=$request->text;
+
+
+        $article->save();
+
+        return redirect('articles');
+
+        
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Article $article)
     {
-        //
+
+        $article->delete();
+
+        return redirect('articles');
     }
 }
